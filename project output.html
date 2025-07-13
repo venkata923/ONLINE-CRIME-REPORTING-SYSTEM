@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeCity | Online Crime Reporting System</title>
+    <style>
+        :root {
+            --primary: #1a365d;
+            --secondary: #2c5282;
+            --accent: #4299e1;
+            --danger: #e53e3e;
+            --success: #38a169;
+            --light: #ebf8ff;
+            --dark: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f7fafc;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), 
+                        url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6f78d844-cdaf-4d9e-81bd-c5f958ebbe52.png');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #3182ce;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background-color: #c53030;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #2f855a;
+        }
+
+        .report-types {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            font-size: 2rem;
+        }
+
+        .report-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .report-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .report-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .form-title {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .evidence-upload {
+            border: 2px dashed #e2e8f0;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .evidence-upload input {
+            display: none;
+        }
+
+        .evidence-upload label {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--light);
+            color: var(--dark);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .evidence-upload label:hover {
+            background-color: #bee3f8;
+        }
+
+        .preview-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .location-controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .confirmation {
+            background-color: rgba(56, 161, 105, 0.1);
+            border: 1px solid var(--success);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 2rem 0;
+            display: none;
+        }
+
+        .confirmation h2 {
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-code {
+            background-color: white;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1.5rem;
+            margin: 1rem auto;
+            max-width: 300px;
+            border: 1px dashed var(--success);
+        }
+
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .emergency-banner {
+            background-color: var(--danger);
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">SC</div>
+                    <div class="logo-text">SafeCity</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#report">Report Crime</a></li>
+                        <li><a href="#track">Track Report</a></li>
+                        <li><a href="#tips">Safety Tips</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="emergency-banner">
+        In case of emergency, please call 911 immediately
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Online Crime Reporting System</h1>
+            <p>Help make our community safer by reporting crimes and suspicious activities. Your report will be reviewed by law enforcement professionals.</p>
+            <a href="#report" class="btn">Report a Crime</a>
+        </div>
+    </section>
+
+    <section class="report-types" id="report">
+        <div class="container">
+            <h2 class="section-title">What would you like to report?</h2>
+            <div class="report-cards">
+                <div class="report-card" onclick="showForm('theft')">
+                    <div class="card-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/5918fe4e-5207-4c72-9dcc-44fb0773ebb5.png" alt="Theft incident scene with personal belongings scattered">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Theft</h3>
+                        <p>Report stolen property, burglary, or larceny incidents.</p>
+                    </div>
+                </div>
+
+                <div class="report-card" onclick="showForm('vandalism')">
+                    <div class="card-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/f47ea9dd-3de8-446a-940c-28c601dc7f03.png" alt="Vandalism showing spray paint graffiti on public property">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Vandalism</h3>
+                        <p>Report property damage, graffiti, or destruction of public property.</p>
+                    </div>
+                </div>
+
+                <div class="report-card" onclick="showForm('assault')">
+                    <div class="card-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/c26c4758-56e7-4902-a718-448ebcb9b8cd.png" alt="Crime scene with police tape marking an assault incident">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Assault</h3>
+                        <p>Report physical altercations, threats, or harassment incidents.</p>
+                    </div>
+                </div>
+
+                <div class="report-card" onclick="showForm('drug')">
+                    <div class="card-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/e8ca4bc9-8cc6-4fc5-90e9-4caace5c08f2.png" alt="Suspected drug paraphernalia left in public space">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Drug Activity</h3>
+                        <p>Report suspicious drug-related activities or paraphernalia.</p>
+                    </div>
+                </div>
+
+                <div class="report-card" onclick="showForm('traffic')">
+                    <div class="card-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/d15cf625-ecf2-4313-8c00-cd5f5e41f4b5.png" alt="Busy intersection with potentially dangerous driving conditions">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Traffic Violation</h3>
+                        <p>Report reckless driving, DUI, or other traffic law violations.</p>
+                    </div>
+                </div>
+
+                <div class="report-card" onclick="showForm('other')">
+                    <div class="card-image">
+                        <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/b89fab7b-d889-4347-9d41-45b2936a51e8.png" alt="Police officer documenting an unspecified crime scene">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Other Incident</h3>
+                        <p>Report any other criminal activity or suspicious behavior.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="report-form" id="reportForm" style="display: none;">
+            <h2 class="form-title" id="formTitle">Report Form</h2>
+            <form id="crimeForm">
+                <div class="form-group">
+                    <label for="incidentType" class="form-label">Incident Type</label>
+                    <select id="incidentType" class="form-control" required>
+                        <option value="">Select incident type</option>
+                        <option value="theft">Theft</option>
+                        <option value="vandalism">Vandalism</option>
+                        <option value="assault">Assault</option>
+                        <option value="drug">Drug Activity</option>
+                        <option value="traffic">Traffic Violation</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" id="firstName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" id="lastName" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="incidentDate" class="form-label">Date of Incident</label>
+                    <input type="date" id="incidentDate" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="incidentTime" class="form-label">Time of Incident</label>
+                    <input type="time" id="incidentTime" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="location" class="form-label">Location</label>
+                    <div class="location-controls">
+                        <input type="text" id="location" class="form-control" placeholder="Address or landmark" required>
+                        <button type="button" class="btn" onclick="getLocation()">Use My Location</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea id="description" class="form-control" placeholder="Please provide detailed information about the incident..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Evidence</label>
+                    <div class="evidence-upload">
+                        <input type="file" id="evidence" multiple>
+                        <label for="evidence">Upload Photos or Videos</label>
+                        <p>Maximum 5 files (10MB total)</p>
+                        <div class="preview-area" id="previewArea"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check">
+                        <input type="checkbox" id="anonymous" class="form-control">
+                        <label for="anonymous">Submit anonymously (your personal information will not be shared)</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn">Submit Report</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="confirmation" id="confirmation">
+            <h2>Report Submitted Successfully</h2>
+            <p>Thank you for helping keep our community safe. Your report has been received and will be reviewed by law enforcement.</p>
+            <div class="confirmation-code">
+                Report ID: <span id="reportId">SC-2023-XXXXXX</span>
+            </div>
+            <p>Use this code to track the status of your report. We may contact you for further information.</p>
+            <div class="form-group">
+                <button onclick="printPage()" class="btn">Print Confirmation</button>
+                <button onclick="newReport()" class="btn">Submit Another Report</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="track">
+        <div class="report-form">
+            <h2 class="form-title">Track Your Report</h2>
+            <div class="form-group">
+                <label for="trackingNumber" class="form-label">Report ID</label>
+                <input type="text" id="trackingNumber" class="form-control" placeholder="Enter your report number (e.g. SC-2023-XXXXXX)">
+            </div>
+            <div class="form-group">
+                <button onclick="trackReport()" class="btn">Track Report</button>
+            </div>
+            <div id="reportStatus" style="display: none;">
+                <h3>Report Status</h3>
+                <div class="status-timeline">
+                    <!-- Status updates would appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Safety Tips</a>
+            </div>
+            <p>© 2023 SafeCity Crime Reporting System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let currentFormType = '';
+        let files = [];
+
+        function showForm(type) {
+            const form = document.getElementById('reportForm');
+            const formTitle = document.getElementById('formTitle');
+            const typeSelect = document.getElementById('incidentType');
+            
+            currentFormType = type;
+            form.style.display = 'block';
+            form.scrollIntoView({ behavior: 'smooth' });
+            
+            // Set form title based on type
+            const typeTitles = {
+                theft: 'Theft Report',
+                vandalism: 'Vandalism Report',
+                assault: 'Assault Report',
+                drug: 'Drug Activity Report',
+                traffic: 'Traffic Violation Report',
+                other: 'Incident Report'
+            };
+            
+            formTitle.textContent = typeTitles[type] || 'Crime Report';
+            typeSelect.value = type;
+        }
+
+        document.getElementById('evidence').addEventListener('change', function(e) {
+            const previewArea = document.getElementById('previewArea');
+            previewArea.innerHTML = '';
+            files = Array.from(e.target.files).slice(0, 5);
+            
+            if (files.length > 5) {
+                alert('Maximum 5 files allowed');
+                return;
+            }
+            
+            const totalSize = files.reduce((total, file) => total + file.size, 0);
+            if (totalSize > 10 * 1024 * 1024) {
+                alert('Total file size exceeds 10MB limit');
+                return;
+            }
+            
+            files.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.innerHTML = '&times;';
+                    removeBtn.onclick = function() {
+                        files.splice(index, 1);
+                        previewItem.remove();
+                    };
+                    
+                    previewItem.appendChild(img);
+                    previewItem.appendChild(removeBtn);
+                    previewArea.appendChild(previewItem);
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+
+        function getLocation() {
+            const locationInput = document.getElementById('location');
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        locationInput.value = `Lat: ${position.coords.latitude.toFixed(6)}, Long: ${position.coords.longitude.toFixed(6)}`;
+                    },
+                    function(error) {
+                        alert('Unable to retrieve your location: ' + error.message);
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported by your browser.');
+            }
+        }
+
+        document.getElementById('crimeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Here you would normally send the data to a server
+            // For this demo, we'll just show a confirmation
+            
+            // Generate a random report ID
+            const reportId = 'SC-' + new Date().getFullYear() + '-' + Math.random().toString(36).substr(2, 6).toUpperCase();
+            document.getElementById('reportId').textContent = reportId;
+            
+            document.getElementById('reportForm').style.display = 'none';
+            document.getElementById('confirmation').style.display = 'block';
+            document.getElementById('confirmation').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        function trackReport() {
+            const trackingNumber = document.getElementById('trackingNumber').value.trim();
+            
+            if (!trackingNumber) {
+                alert('Please enter your report ID');
+                return;
+            }
+            
+            // Here you would normally check the status from a server
+            // For this demo, we'll just show a mock status
+            const statusDiv = document.getElementById('reportStatus');
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = `
+                <h3>Report Status: ${trackingNumber}</h3>
+                <div class="status-timeline">
+                    <p><strong>Submitted:</strong> ${new Date().toLocaleDateString()} - Report received and awaiting review</p>
+                    <p><strong>Updated:</strong> ${new Date().toLocaleDateString()} - Case assigned to investigator</p>
+                </div>
+            `;
+            statusDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function printPage() {
+            window.print();
+        }
+
+        function newReport() {
+            document.getElementById('confirmation').style.display = 'none';
+            document.getElementById('crimeForm').reset();
+            document.getElementById('previewArea').innerHTML = '';
+            files = [];
+            showForm(currentFormType);
+        }
+    </script>
+</body>
+</html>
+
+```
